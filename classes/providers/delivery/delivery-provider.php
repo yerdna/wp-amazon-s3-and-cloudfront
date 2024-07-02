@@ -779,6 +779,7 @@ abstract class Delivery_Provider extends Provider implements Validator_Interface
 
 		$valid_providers = array_keys( $this->as3cf->get_available_delivery_provider_details( $storage_provider_key ) );
 		if ( ! in_array( $delivery_provider_key, $valid_providers ) ) {
+
 			return new AS3CF_Result(
 				Validator_Interface::AS3CF_STATUS_MESSAGE_ERROR,
 				sprintf(

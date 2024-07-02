@@ -22,6 +22,7 @@ use DeliciousBrains\WP_Offload_Media\Providers\Delivery\AWS_CloudFront;
 use DeliciousBrains\WP_Offload_Media\Providers\Delivery\Cloudflare;
 use DeliciousBrains\WP_Offload_Media\Providers\Delivery\Delivery_Provider;
 use DeliciousBrains\WP_Offload_Media\Providers\Delivery\DigitalOcean_Spaces_CDN;
+use DeliciousBrains\WP_Offload_Media\Providers\Delivery\Linode_S3_CDN;
 use DeliciousBrains\WP_Offload_Media\Providers\Delivery\GCP_CDN;
 use DeliciousBrains\WP_Offload_Media\Providers\Delivery\KeyCDN;
 use DeliciousBrains\WP_Offload_Media\Providers\Delivery\Other;
@@ -30,6 +31,7 @@ use DeliciousBrains\WP_Offload_Media\Providers\Delivery\Storage;
 use DeliciousBrains\WP_Offload_Media\Providers\Provider;
 use DeliciousBrains\WP_Offload_Media\Providers\Storage\AWS_Provider;
 use DeliciousBrains\WP_Offload_Media\Providers\Storage\DigitalOcean_Provider;
+use DeliciousBrains\WP_Offload_Media\Providers\Storage\Linode_S3_Provider;
 use DeliciousBrains\WP_Offload_Media\Providers\Storage\GCP_Provider;
 use DeliciousBrains\WP_Offload_Media\Providers\Storage\Null_Provider;
 use DeliciousBrains\WP_Offload_Media\Providers\Storage\Storage_Provider;
@@ -226,6 +228,7 @@ class Amazon_S3_And_CloudFront extends AS3CF_Plugin_Base {
 		static::$storage_provider_classes = apply_filters( 'as3cf_storage_provider_classes', array(
 			AWS_Provider::get_provider_key_name()          => 'DeliciousBrains\WP_Offload_Media\Providers\Storage\AWS_Provider',
 			DigitalOcean_Provider::get_provider_key_name() => 'DeliciousBrains\WP_Offload_Media\Providers\Storage\DigitalOcean_Provider',
+			Linode_S3_Provider::get_provider_key_name() => 'DeliciousBrains\WP_Offload_Media\Providers\Storage\Linode_S3_Provider',
 			GCP_Provider::get_provider_key_name()          => 'DeliciousBrains\WP_Offload_Media\Providers\Storage\GCP_Provider',
 		) );
 
@@ -233,6 +236,9 @@ class Amazon_S3_And_CloudFront extends AS3CF_Plugin_Base {
 			// First Party CDNs.
 			AWS_CloudFront::get_provider_key_name()          => 'DeliciousBrains\WP_Offload_Media\Providers\Delivery\AWS_CloudFront',
 			DigitalOcean_Spaces_CDN::get_provider_key_name() => 'DeliciousBrains\WP_Offload_Media\Providers\Delivery\DigitalOcean_Spaces_CDN',
+
+			Linode_S3_CDN::get_provider_key_name() => 'DeliciousBrains\WP_Offload_Media\Providers\Delivery\Linode_S3_CDN',
+
 			GCP_CDN::get_provider_key_name()                 => 'DeliciousBrains\WP_Offload_Media\Providers\Delivery\GCP_CDN',
 			// Third Party CDNs.
 			Cloudflare::get_provider_key_name()              => 'DeliciousBrains\WP_Offload_Media\Providers\Delivery\Cloudflare',
@@ -975,8 +981,14 @@ class Amazon_S3_And_CloudFront extends AS3CF_Plugin_Base {
 				if ( strstr( $domain, '.cloudfront.net' ) ) {
 					$delivery_provider = AWS_CloudFront::get_provider_key_name();
 				} elseif ( strstr( $domain, '.cdn.digitaloceanspaces.com' ) ) {
+
 					$delivery_provider = DigitalOcean_Spaces_CDN::get_provider_key_name();
-				} elseif (
+
+				} elseif ( strstr( $domain, 'linode' ) ) {
+					$delivery_provider = Linode_S3_CDN::get_provider_key_name();
+
+				}
+				elseif (
 					'gcp' === $this->get_storage_provider()->get_provider_key_name() &&
 					false === strstr( $domain, $this->get_storage_provider()->get_domain() )
 				) {
