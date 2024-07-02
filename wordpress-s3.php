@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: WP Offload Media Lite
+Plugin Name: WP Offload Media Lite (plus compatibility with Linode Object Storage)
 Plugin URI: http://wordpress.org/extend/plugins/amazon-s3-and-cloudfront/
 Description: Automatically copies media uploads to Amazon S3, DigitalOcean Spaces or Google Cloud Storage for storage and delivery. Optionally configure Amazon CloudFront or another CDN for even faster delivery.
 Author: Delicious Brains

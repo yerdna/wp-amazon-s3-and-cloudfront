@@ -1,5 +1,7 @@
 This 3.2.7 version of the plugin is **modified** to add compatibility with Linode Object Storage, including custom delivery domains for Linode buckets.
+
 2 files have been changed and 2 new files added.
+
 However it supports only eu-central-1 region currently, see classes/providers/storage/linode-s3-provider.php near line #90.
 
 I hope, the plugin developers will add Linode compatibility sometimes in future but I need this today.
